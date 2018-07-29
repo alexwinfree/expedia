@@ -19,8 +19,10 @@ module.exports = {
         "selenium_host"  : "localhost",
         "silent": true,
         "screenshots" : {
-          "enabled" : false,
-          "path" : ""
+          "enabled" : true,
+          "path" : "test/screenshots/selenium",
+          "on_error": true,
+          "on_failure":true,
         },
         "desiredCapabilities": {
           "browserName": "chrome",

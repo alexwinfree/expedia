@@ -1,35 +1,47 @@
-var pageObject= {}
-module.exports={
-beforeEach: browser => {
-pageObject=browser.page.expedia()
-pageObject
-.navigate()
-}, // beforeEach
-after: browser => {
-    browser.end()
-},// after 
-'Page Load': browser => {
-pageObject
-.waitForElementPresent('@logo',7000)
-},// page load
-'Search flight': browser=> {
-pageObject
-.click('@flight')
-.setValue('@flyingFrom','Salt Lake City')
-.setValue('@flyingTo','San Diego')
-.setValue('@departing','10/15/2018')
-.setValue('@returning','12/15/2018')
-.click('@search')
-browser.pause(5000)
-},// search flight
-'Select flight depature and return': browser=> {
-pageObject
-.click('@select')
-// same selector on second page
-.click('@select')
-},// select flight
-'payment page': browser=> {
-pageObject
-.waitForElementPresent('@logo',5000)
-},//
+var pageObject = {}
+module.exports = {
+    beforeEach: browser => {
+        pageObject = browser.page.expedia()
+        pageObject
+            .navigate()
+    }, // beforeEach
+    after: browser => {
+        browser.end()
+    },// after 
+    'Page Load and general UI': browser => {
+        pageObject
+            .waitForElementPresent('@logo', 7000)
+            .waitForElementPresent('@bundle', 7000)
+            .waitForElementPresent('@hotels', 7000)
+            .waitForElementPresent('@cars', 7000)
+            .waitForElementPresent('@flightsTab', 7000)
+            .waitForElementPresent('@cruises', 7000)
+            .click('@flightsTab')
+        pageObject.expect.element('@flyingFrom').text.to.equal('')
+        pageObject.expect.element('@flyingTo').text.to.equal('')
+        pageObject.expect.element('@departing').text.to.equal('')
+        pageObject.expect.element('@returning').text.to.equal('')
+    },// page load
+    'Set information': browser => {
+        pageObject
+            .click('@flightsTab')
+            .setValue('@flyingFrom', 'Salt Lake City, UT, United States (SLC)')
+            .setValue('@flyingTo', 'Sacramento, CA (SMF-Sacramento Intl.)')
+            .setValue('@departing', '10/15/2018')
+            .clearValue('@returning')
+            .setValue('@returning', '12/20/2018')
+            .click('@search')
+
+
+    },// search flight
+    'Select flight depature,return dates and payment page': browser => {
+        pageObject
+            .click('@search')
+            .waitForElementPresent('@select', 4000)
+            .click('@select')
+            .waitForElementPresent('@select2', 4000)
+            .click('@select2')
+        browser.pause(8000)
+    },// select flight depature,return dates and payment
+
 }// exprots
